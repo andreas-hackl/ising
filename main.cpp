@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <gsl/gsl_rng.h>
 #include "spingrid.h"
+#include "measurements.h"
 
 
 using namespace std;
@@ -65,7 +66,7 @@ int main()
 	cout << "n_x = " << size[0] << endl;
 	cout << "n_y = " << size[1] << endl;
 
-	Lattice.init_hot(rng, 0.5);
+	Lattice.init_cold(1);
 
 	Lattice.print_lattice();
 
@@ -77,6 +78,8 @@ int main()
 
 	cout << Lattice.get_magnetization() << endl;
 	cout << Lattice.get_energy(J) << endl;
+
+	cout << Lattice.spin_flip_energy(5, J) << endl;
 	return 0;
 	
 }

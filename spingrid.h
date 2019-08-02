@@ -24,6 +24,7 @@ class Spingrid
         // definition of the methods
 
         std::vector<int> get_size();
+        int get_vol();
 
 
         void init_cold(T value); 
@@ -31,6 +32,7 @@ class Spingrid
         void print_lattice();
 
         void spin_flip(int index);
+        int spin_flip_energy(int index, int J);
 
         double get_magnetization();
         double get_energy(int J);

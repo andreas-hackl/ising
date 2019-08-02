@@ -70,6 +70,9 @@ std::vector<int> Spingrid<T>::get_size()
     return size;
 }
 
+template<typename T>
+int Spingrid<T>::get_vol() {return vol;}
+
 
 template<typename T>
 void Spingrid<T>::init_cold(T value)
@@ -114,6 +117,21 @@ void Spingrid<int>::spin_flip(int index)
     lattice[index] *= (-1);
 }
 
+template<>
+int Spingrid<int>::spin_flip_energy(int index, int J)
+{
+    int dE = 0;
+    int neighbor_sum = 0;
+
+    for (int j = 0; j < 4; ++j)
+    {
+        neighbor_sum += lattice[neighbors[index*4 + j]];
+    }
+
+    dE = 2*J* lattice[index] * neighbor_sum;
+
+    return dE;
+}
 template<typename T>
 double Spingrid<T>::get_magnetization()
 {
