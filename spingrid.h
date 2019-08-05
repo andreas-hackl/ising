@@ -29,7 +29,9 @@ class Spingrid
 
         void init_cold(T value); 
         void init_hot(gsl_rng *rng, double p);
+
         void print_lattice();
+        void print_neighbors();
 
         void spin_flip(int index);
         int spin_flip_energy(int index, int J);

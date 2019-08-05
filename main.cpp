@@ -6,25 +6,27 @@
 #include <gsl/gsl_rng.h>
 #include "spingrid.h"
 #include "measurements.h"
+#include "metropolis.h"
 
 
 using namespace std;
 
+const int J = 1;
+
 // write measuresments into a file
-/*
-void write_in_data(measurements measure, double T, int n_x, int n_y, string name)
+
+void write_in_data(Measurements &measure, string name)
 {
-	vector<int> energies = measure.energies;
-	vector<int> magnetization = measure.magnetizations;
-	int V = n_x * n_y;
+	vector<double> energies = measure.get_energy();
+	vector<double> magnetization = measure.get_magnetization();
 	ofstream file(name);
 	for (int i = 0; i < energies.size(); ++i)
 	{
-		file << i+1 << "\t" << static_cast<double>(energies[i])/V << "\t" << static_cast<double>(magnetization[i])/V << endl;
+		file << i+1 << "\t" << energies[i] << "\t" << magnetization[i] << endl;
 	}
 	file.close();
 }
-*/
+
 
 
 int main()
@@ -52,34 +54,31 @@ int main()
 	
 	// Define important variables:
 	
-	int n_x = 10;
+	int n_x = 64;
 	int n_y = n_x;
 
 	int dim = 2;
-
-	int J = 1;
-	
 	
 	Spingrid<int> Lattice(dim, n_x, n_y);
 	
 	vector<int> size = Lattice.get_size();
+	cout << "Lattice size: " << endl;
 	cout << "n_x = " << size[0] << endl;
 	cout << "n_y = " << size[1] << endl;
+	
+	cout << "x = " << 0 << endl;
+	cout << "y = " << 9 << endl;
 
+	cout << "index = " << p2i(0, 9, size[0], size[1]);
+	Lattice.print_neighbors();
+	cout << "Initialize a cold start with all spins in +1 direction" << endl;
 	Lattice.init_cold(1);
 
-	Lattice.print_lattice();
+	Measurements measure;
 
-	cout << Lattice.get_magnetization() << endl;
+	measure = metropolis::metropolis(Lattice, rng, J, 2.0);
 
-	Lattice.spin_flip(1);
-
-	Lattice.print_lattice();
-
-	cout << Lattice.get_magnetization() << endl;
-	cout << Lattice.get_energy(J) << endl;
-
-	cout << Lattice.spin_flip_energy(5, J) << endl;
+	write_in_data(measure, "T20.txt");
 	return 0;
 	
 }

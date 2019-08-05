@@ -7,13 +7,25 @@
 
 Measurements::Measurements()
 {
-    energies = std::vector<double> energies,
-    magnetizations = std::vector<double> magnetizations;
+    std::vector<double> energ;
+    std::vector<double> magn;
+    energies = energ;
+    magnetizations = magn;
 }
 
-Measurements::append_data(double energy, double magnetization)
+void Measurements::append_data(double energy, double magnetization)
 {
     energies.push_back(energy);
     magnetizations.push_back(magnetization);
 
+}
+
+std::vector<double> Measurements::get_energy()
+{
+    return energies;
+}
+
+std::vector<double> Measurements::get_magnetization()
+{
+    return magnetizations;
 }
